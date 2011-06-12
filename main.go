@@ -17,6 +17,7 @@ type IrcFs struct {
 }
 
 func (me *IrcFs) GetAttr(name string) (*os.FileInfo, fuse.Status) {
+    log.Print("GetAttr "+name)
     switch name {
     case "file.txt":
         return &os.FileInfo{Mode: fuse.S_IFREG | 0644, Size: int64(len(name))}, fuse.OK
@@ -27,6 +28,7 @@ func (me *IrcFs) GetAttr(name string) (*os.FileInfo, fuse.Status) {
 }
 
 func (me *IrcFs) OpenDir(name string) (stream chan fuse.DirEntry, code fuse.Status) {
+    log.Print("OpenDir "+name)
     if name == "" {
         stream = make(chan fuse.DirEntry) // , n + 5) // MUAHAHA NO BUFFER
         stream <- fuse.DirEntry{Name: "file.txt", Mode: fuse.S_IFREG}
@@ -37,6 +39,7 @@ func (me *IrcFs) OpenDir(name string) (stream chan fuse.DirEntry, code fuse.Stat
 }
 
 func (me *IrcFs) Open(name string, flags uint32) (file fuse.File, code fuse.Status) {
+    log.Print("Open "+name)
     if name != "file.txt" {
         return nil, fuse.ENOENT
     }
