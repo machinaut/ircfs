@@ -22,17 +22,17 @@ func (me *IrcFs) GetAttr(name string) (*os.FileInfo, fuse.Status) {
     log.Print("GetAttr " + name)
     switch name {
     case "file.txt":
-        return &os.FileInfo{Mode: fuse.S_IFREG | 0666, Size: int64(len(name))}, fuse.OK
+        return &os.FileInfo{Mode: fuse.S_IFREG | 0444, Size: int64(len(name))}, fuse.OK
     case "ctl":
-        return &os.FileInfo{Mode: fuse.S_IFREG | 0666, Size: int64(len(name))}, fuse.OK
+        return &os.FileInfo{Mode: fuse.S_IFREG | 0222, Size: int64(len(name))}, fuse.OK
     case "event":
-        return &os.FileInfo{Mode: fuse.S_IFREG | 0666, Size: int64(len(name))}, fuse.OK
+        return &os.FileInfo{Mode: fuse.S_IFREG | 0444, Size: int64(len(name))}, fuse.OK
     case "nick":
-        return &os.FileInfo{Mode: fuse.S_IFREG | 0666, Size: int64(len(nick))}, fuse.OK
+        return &os.FileInfo{Mode: fuse.S_IFREG | 0444, Size: int64(len(nick))}, fuse.OK
     case "raw":
         return &os.FileInfo{Mode: fuse.S_IFREG | 0666, Size: int64(len(name))}, fuse.OK
     case "pong":
-        return &os.FileInfo{Mode: fuse.S_IFREG | 0666, Size: int64(len(name))}, fuse.OK
+        return &os.FileInfo{Mode: fuse.S_IFREG | 0444, Size: int64(len(name))}, fuse.OK
     case "":
         return &os.FileInfo{Mode: fuse.S_IFDIR | 0755}, fuse.OK
     }
