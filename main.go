@@ -8,6 +8,8 @@ import (
     "log"
     "github.com/ajray/go-fuse/fuse"
     "os"
+    "time"
+    "os/signal"
 )
 
 var n = 3
@@ -58,12 +60,12 @@ func (me *IrcFs) OpenDir(name string) (stream chan fuse.DirEntry, code fuse.Stat
 func (me *IrcFs) Open(name string, flags uint32) (file fuse.File, code fuse.Status) {
     log.Print("Open " + name)
     switch name {
-    case "nick":
-        return fuse.NewReadOnlyFile([]byte(nick)), fuse.OK
-    case "file.txt":
-        return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
-    case "ctl":
-        return ctl, fuse.OK
+    case "file.txt":return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
+    case "ctl":     return ctl,                                fuse.OK
+    case "event":   return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
+    case "nick":    return fuse.NewReadOnlyFile([]byte(nick)), fuse.OK
+    case "raw":     return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
+    case "pong":    return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
     }
     return nil, fuse.ENOENT
 }
@@ -76,5 +78,13 @@ func main() {
     if err != nil {
         log.Fatal("Mount fail:", err)
     }
-    state.Loop(true)
+    go func() {
+        for {
+            sig := <-signal.Incoming
+            time.Sleep(1) // FIXME TODO XXX hack to make the goroutine scheduler switch
+            log.Print("Reading signal: " + sig.String() )
+        }
+    }()
+    //state.Loop(true)
+    log.Print(state)
 }
