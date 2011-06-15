@@ -5,6 +5,7 @@
 package main
 
 import (
+    "flag"
     "log"
     "github.com/ajray/go-fuse/fuse"
     "os"
@@ -16,6 +17,16 @@ var (
     n    = 3
     nickFile = NewNickFile("ajray")
     ctlFile  = NewCtlFile()
+)
+
+// Flags
+var (
+    fa = flag.String("a","addr","Use address as irc server.")
+    ff = flag.String("f","fromhost","Make the connection from ip address or host name fromhost.")
+    fn = flag.String("n","nick","Use nick as nickname when connecting.")
+    fl = flag.String("l","logpath","Log contents of the data files of all the irc dirs to logpath/.")
+    ft = flag.Bool("t",false,"Use long timestamps, in both logging and the data file.")
+    fd = flag.Bool("d",false,"Enable debugging.")
 )
 
 type IrcFs struct {
@@ -79,6 +90,7 @@ func (me *IrcFs) Open(name string, flags uint32) (file fuse.File, code fuse.Stat
 }
 
 func main() {
+    flag.Parse()
     if len(os.Args) < 2 {
         log.Fatal("Usage:  ircfs MOUNTPOINT")
     }
