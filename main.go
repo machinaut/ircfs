@@ -8,13 +8,15 @@ import (
     "log"
     "github.com/ajray/go-fuse/fuse"
     "os"
-    "time"
-    "os/signal"
+//    "time"
+//    "os/signal"
 )
 
-var n = 3
-var nick = "ajray"
-var ctl = NewCtlFile()
+var (
+    n    = 3
+    NickFile = NewNickFile("ajray")
+    ctlFile  = NewCtlFile()
+)
 
 type IrcFs struct {
     fuse.DefaultFileSystem
@@ -63,11 +65,11 @@ func (me *IrcFs) Open(name string, flags uint32) (file fuse.File, code fuse.Stat
     case "file.txt":
         return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
     case "ctl":
-        return ctl, fuse.OK
+        return ctlFile, fuse.OK
     case "event":
         return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
     case "nick":
-        return fuse.NewReadOnlyFile([]byte(nick)), fuse.OK
+        return nickFile, fuse.OK
     case "raw":
         return fuse.NewReadOnlyFile([]byte(name)), fuse.OK
     case "pong":

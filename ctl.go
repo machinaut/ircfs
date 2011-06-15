@@ -29,6 +29,7 @@ package main
 import (
     "log"
     "github.com/ajray/go-fuse/fuse"
+    "strings"
 )
 
 type CtlFile struct {
@@ -42,5 +43,10 @@ func NewCtlFile() *CtlFile {
 
 func (me *CtlFile) Write(input *fuse.WriteIn, content []byte) (uint32, fuse.Status) {
     log.Println("Write: "+string(content))
+    s := strings.Split(string(content)," ",-1)
+    if s[0] == "nick" && len(s) > 1 {
+        log.Println("New Nick: " + s[1])
+        NickFile.data = []byte(s[1])
+    }
     return uint32(len(content)), fuse.OK
 }
