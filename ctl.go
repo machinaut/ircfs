@@ -46,7 +46,7 @@ func (me *CtlFile) Write(input *fuse.WriteIn, content []byte) (uint32, fuse.Stat
     s := strings.Split(string(content)," ",-1)
     if s[0] == "nick" && len(s) > 1 {
         log.Println("New Nick: " + s[1])
-        NickFile.data = []byte(s[1])
+        nickFile.Nick = s[1]
     }
     return uint32(len(content)), fuse.OK
 }

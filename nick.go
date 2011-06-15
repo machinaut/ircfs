@@ -1,14 +1,14 @@
 package main
 
 import (
-    "log"
+//    "log"
     "github.com/ajray/go-fuse/fuse"
-    "strings"
+//    "strings"
 )
 
 type NickFile struct {
     Nick string
-    DefaultFile
+    fuse.DefaultFile
 }
 
 func NewNickFile(nick string) *NickFile {
@@ -18,10 +18,10 @@ func NewNickFile(nick string) *NickFile {
 }
 
 func (me *NickFile) Read(input *fuse.ReadIn, bp fuse.BufferPool) ([]byte, fuse.Status) {
-    end = int(input.Offset) + int(input.Size)
+    end := int(input.Offset) + int(input.Size)
     if end > len(me.Nick) {
         end = len(me.Nick)
     }
 
-    return me.Nick[input.Offset:end], fuse.OK
+    return []byte(me.Nick[input.Offset:end]), fuse.OK
 }

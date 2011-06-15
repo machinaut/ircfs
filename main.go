@@ -14,7 +14,7 @@ import (
 
 var (
     n    = 3
-    NickFile = NewNickFile("ajray")
+    nickFile = NewNickFile("ajray")
     ctlFile  = NewCtlFile()
 )
 
@@ -32,7 +32,7 @@ func (me *IrcFs) GetAttr(name string) (*os.FileInfo, fuse.Status) {
     case "event":
         return &os.FileInfo{Mode: fuse.S_IFREG | 0444, Size: int64(len(name))}, fuse.OK
     case "nick":
-        return &os.FileInfo{Mode: fuse.S_IFREG | 0444, Size: int64(len(nick))}, fuse.OK
+        return &os.FileInfo{Mode: fuse.S_IFREG | 0444, Size: int64(len(nickFile.Nick))}, fuse.OK
     case "raw":
         return &os.FileInfo{Mode: fuse.S_IFREG | 0666, Size: int64(len(name))}, fuse.OK
     case "pong":
